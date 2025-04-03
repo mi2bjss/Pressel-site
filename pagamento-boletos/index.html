@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pague seu Boleto com Cartão de Crédito</title>
+</head>
+<body>
+    <h1>Pague seu Boleto com Cartão de Crédito</h1>
+
+    <label for="boleto">Código do Boleto:</label>
+    <input type="text" id="boleto" placeholder="Digite o código do boleto"><br><br>
+
+    <label for="numero-cartao">Número do Cartão:</label>
+    <input type="text" id="numero-cartao" placeholder="Número do cartão"><br><br>
+
+    <label for="validade">Validade:</label>
+    <input type="text" id="validade" placeholder="MM/AA"><br><br>
+
+    <label for="cvv">CVV:</label>
+    <input type="text" id="cvv" placeholder="CVV"><br><br>
+
+    <button id="botaoPagar">Pagar</button>
+
+    <script>
+        document.getElementById("botaoPagar").addEventListener("click", function () {
+            const boleto = document.getElementById("boleto").value;
+            const numeroCartao = document.getElementById("numero-cartao").value;
+            const validade = document.getElementById("validade").value;
+            const cvv = document.getElementById("cvv").value;
+
+            fetch("http://127.0.0.1:8080/processar_pagamento", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ boleto, numero_cartao: numeroCartao, validade, cvv })
+            })
+            .then(response => response.json())
+            .then(data => { alert(data.mensagem); })
+            .catch(error => { 
+                console.error("Erro ao processar pagamento:", error);
+                alert("Erro ao processar pagamento!");
+            });
+        });
+    </script>
+</body>
+</html>
+
